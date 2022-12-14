@@ -24,9 +24,10 @@ public class Task1 {
     @Test
     public void task1() {
 
-        open("file:///C://Users//User//IdeaProjects//homework_11//src//test//java//task1//index.html");
+        // путь к файлу index.html из папки task1
+        open("file://C:/Users/User/IdeaProjects/homework_11/src/test/java/task1/index.html");
 
-        System.out.println("h1 div:      " + $("h1 span").getText());
-        System.out.println("$h1.$div:    " + $("h1").$("span").getText());
+        System.out.println("h1 div:      " + $("h1 div").getText());
+        System.out.println("$h1.$div:    " + $("h1").$("div").getText());
     }
 }
