@@ -1,6 +1,8 @@
 package tests;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeAll;
 
 public class BaseTest {
@@ -8,7 +10,8 @@ public class BaseTest {
     @BeforeAll
     public static void beforeAll() {
         Configuration.baseUrl = "https://github.com/";
-        Configuration.headless = false;
         Configuration.browserSize = "1920x1080";
+
+        SelenideLogger.addListener("allure", new AllureSelenide());
     }
 }

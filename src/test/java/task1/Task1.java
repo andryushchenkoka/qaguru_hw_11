@@ -2,6 +2,9 @@ package task1;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.file.Path;
+
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 
@@ -24,8 +27,9 @@ public class Task1 {
     @Test
     public void task1() {
 
+        File currentPath = new File("");
         // путь к файлу index.html из папки task1
-        open("file://C:/Users/User/IdeaProjects/homework_11/src/test/java/task1/index.html");
+        open(currentPath.getAbsolutePath() + "/src/test/java/task1/index.html");
 
         System.out.println("h1 div:      " + $("h1 div").getText());
         System.out.println("$h1.$div:    " + $("h1").$("div").getText());

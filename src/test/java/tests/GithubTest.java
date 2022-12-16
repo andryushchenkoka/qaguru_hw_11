@@ -1,33 +1,36 @@
 package tests;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pages.SelenideMainPage;
-import pages.SelenideWikiPage;
-import pages.SelenideWikiSoftAssertionsPage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
+import static io.qameta.allure.Allure.step;
 
 public class GithubTest extends BaseTest {
 
     @Test
+    @DisplayName("На странице SoftAssertions есть пример кода для JUnit5")
     public void githubTest() {
 
-        String articleName = "SoftAssertions", // Название раздела в боковом меню
-                headText = "JUnit5";           // Текст для поиска в заголовке
+        step("Открыть страницу Selenide в Github", () -> {
+            open("selenide/selenide");
+        });
 
-        new SelenideMainPage()
-                .openPage()
-                .clickOnWikiTab();
+        step("Перейти в раздел Wiki", () -> {
+            $("#wiki-tab").click();
+        });
 
-        new SelenideWikiPage()
-                .openPage()
-                .expandMenu()
-                .clickOnArticleInMenu(articleName);
+        step("В боковом меню есть раздел SoftAssertions", () -> {
+            $("div[id = 'wiki-pages-box']").$(withText("more pages")).click();
+            $("div[id = 'wiki-pages-box']").$(byText("SoftAssertions")).shouldBe(visible).click();
+        });
 
-        SelenideWikiSoftAssertionsPage softAssertionsPage = new SelenideWikiSoftAssertionsPage();
-        softAssertionsPage.openPage();
-        boolean isCodeExample = softAssertionsPage.findCodeExampleByHead(softAssertionsPage.getHeadWithText(headText));
-
-        assertTrue(isCodeExample);
+        step("На странице SoftAssertions есть пример кода для JUnit5", () -> {
+            $("#user-content-3-using-junit5-extend-test-class").parent().shouldHave(text("JUnit5"));
+        });
     }
 }
