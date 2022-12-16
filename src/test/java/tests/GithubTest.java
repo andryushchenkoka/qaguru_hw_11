@@ -1,33 +1,26 @@
 package tests;
 
 import org.junit.jupiter.api.Test;
-import pages.SelenideMainPage;
-import pages.SelenideWikiPage;
-import pages.SelenideWikiSoftAssertionsPage;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.codeborne.selenide.Condition.*;
+import static com.codeborne.selenide.Selectors.byText;
+import static com.codeborne.selenide.Selectors.withText;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.open;
 
 public class GithubTest extends BaseTest {
 
     @Test
     public void githubTest() {
 
-        String articleName = "SoftAssertions", // Название раздела в боковом меню
-                headText = "JUnit5";           // Текст для поиска в заголовке
-
-        new SelenideMainPage()
-                .openPage()
-                .clickOnWikiTab();
-
-        new SelenideWikiPage()
-                .openPage()
-                .expandMenu()
-                .clickOnArticleInMenu(articleName);
-
-        SelenideWikiSoftAssertionsPage softAssertionsPage = new SelenideWikiSoftAssertionsPage();
-        softAssertionsPage.openPage();
-        boolean isCodeExample = softAssertionsPage.findCodeExampleByHead(softAssertionsPage.getHeadWithText(headText));
-
-        assertTrue(isCodeExample);
+        // - Откройте страницу Selenide в Github
+        open("selenide/selenide");
+        // - Перейдите в раздел Wiki проекта
+        $("#wiki-tab").click();
+        // - Убедитесь, что в списке страниц (Pages) есть страница SoftAssertions
+        $("div[id = 'wiki-pages-box']").$(withText("more pages")).click();
+        $("div[id = 'wiki-pages-box']").$(byText("SoftAssertions")).shouldBe(visible).click();
+        // - Откройте страницу SoftAssertions, проверьте что внутри есть пример кода для JUnit5
+        $("#user-content-3-using-junit5-extend-test-class").parent().shouldHave(text("JUnit5"));
     }
 }
